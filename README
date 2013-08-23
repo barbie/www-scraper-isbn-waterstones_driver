@@ -20,21 +20,26 @@ DEPENDENCIES
 
 This module requires these other modules:
 
+  WWW::Mechanize
   WWW::Scraper::ISBN
   WWW::Scraper::ISBN::Record
   WWW::Scraper::ISBN::Driver
-  WWW::Mechanize
 
-For optional testing the module would like these other modules:
+For testing the module requires these modules:
 
+  IO::File
+  Test::More
+
+For optional testing the module would like these modules:
+
+  Test::CPAN::Meta
+  Test::CPAN::Meta::JSON
   Test::Pod
   Test::Pod::Coverage
-  Test::CPAN::Meta
-  Test::JSON::Meta
 
 COPYRIGHT AND LICENSE
 
-  Copyright (C) 2010 Barbie for Miss Barbell Productions
+  Copyright (C) 2010-2013 Barbie for Miss Barbell Productions
 
   This module is free software; you can redistribute it and/or
   modify it under the Artistic Licence v2.

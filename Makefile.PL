@@ -1,16 +1,27 @@
-use ExtUtils::MakeMaker;
-WriteMakefile(
-    'NAME'			=> 'WWW::Scraper::ISBN::Waterstones_Driver',
-    'VERSION_FROM'	=> 'lib/WWW/Scraper/ISBN/Waterstones_Driver.pm',
-    'PREREQ_PM'		=> {
-		WWW::Scraper::ISBN			=> 0.25,
-		WWW::Scraper::ISBN::Driver	=> 0.18,
-		WWW::Mechanize				=> 1.60,
-		Test::More					=> 0.45,	# for testing
-	},
-	NO_META			=> 1,
+#!/usr/bin/perl
 
-    ($] >= 5.005 ?    ## Add these new keywords supported since 5.005
-      (ABSTRACT => q|Search driver for the Waterstones online book catalog|,
-       AUTHOR     => 'Barbie <barbie@cpan.org>') : ()),
+use strict;
+use warnings;
+use 5.006;
+
+use ExtUtils::MakeMaker;
+
+WriteMakefile(
+    AUTHOR              => 'Barbie <barbie@cpan.org>',
+    NAME                => 'WWW::Scraper::ISBN::Waterstones_Driver',
+    VERSION_FROM        => 'lib/WWW/Scraper/ISBN/Waterstones_Driver.pm',
+    ABSTRACT            => 'Search driver for the Waterstones online book catalog',
+    NO_META             => 1,
+    PREREQ_PM           => {
+
+        # prereqs
+        'WWW::Mechanize'                => '1.60',
+        'WWW::Scraper::ISBN'            => '0.25',
+        'WWW::Scraper::ISBN::Driver'    => '0.18',
+
+        # build/test prereqs
+        'IO::File'                      => '0',
+        'Test::More'                    => '0.70'
+
+    }
 );

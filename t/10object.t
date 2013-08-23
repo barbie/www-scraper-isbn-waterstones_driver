@@ -12,32 +12,32 @@ my $CHECK_DOMAIN    = 'www.google.com';
 
 my %tests = (
     '1558607013' => [
-        [ 'is',     'isbn',         '9781558607019'     ],
-        [ 'is',     'isbn10',       '1558607013'        ],
-        [ 'is',     'isbn13',       '9781558607019'     ],
-        [ 'is',     'ean13',        '9781558607019'     ],
-        [ 'is',     'title',        'Higher-Order Perl: Transforming Programs with Programs'            ],
-        [ 'is',     'author',       'Mark Jason Dominus'   ],
-        [ 'is',     'publisher',    'Morgan Kaufmann Publishers In'    ],
-        [ 'is',     'pubdate',      '10/12/2004' ],
-        [ 'is',     'binding',      'Paperback'         ],
-        [ 'is',     'pages',        600                 ],
+        [ 'is',     'isbn',         '9781558607019'                 ],
+        [ 'is',     'isbn10',       '1558607013'                    ],
+        [ 'is',     'isbn13',       '9781558607019'                 ],
+        [ 'is',     'ean13',        '9781558607019'                 ],
+        [ 'is',     'title',        'Higher-Order Perl: Transforming Programs with Programs'    ],
+        [ 'is',     'author',       'Mark Jason Dominus'            ],
+        [ 'is',     'publisher',    'Morgan Kaufmann Publishers In' ],
+        [ 'is',     'pubdate',      '10/12/2004'                    ],
+        [ 'is',     'binding',      'Paperback'                     ],
+        [ 'is',     'pages',        600                             ],
         [ 'is',     'image_link',   'http://www.waterstones.com/wat/images/nbd/m/978155/860/9781558607019.jpg' ],
         [ 'is',     'thumb_link',   'http://www.waterstones.com/wat/images/nbd/s/978155/860/9781558607019.jpg' ],
         [ 'like',   'description',  qr|Most Perl programmers were originally trained as C and Unix programmers,| ],
         [ 'is',     'book_link',    'http://www.waterstones.com/waterstonesweb/products/mark+jason+dominus/higher-order+perl/4263640/' ]
     ],
     '9780571239566' => [
-        [ 'is',     'isbn',         '9780571239566'     ],
-        [ 'is',     'isbn10',       '0571239560'        ],
-        [ 'is',     'isbn13',       '9780571239566'     ],
-        [ 'is',     'ean13',        '9780571239566'     ],
-        [ 'is',     'title',        'Touching from a Distance'  ],
-        [ 'is',     'author',       'Deborah Curtis'    ],
-        [ 'is',     'publisher',    'Faber and Faber'   ],
-        [ 'is',     'pubdate',      '04/10/2007'   ],
-        [ 'is',     'binding',      'Paperback'         ],
-        [ 'is',     'pages',        240                 ],
+        [ 'is',     'isbn',         '9780571239566'                 ],
+        [ 'is',     'isbn10',       '0571239560'                    ],
+        [ 'is',     'isbn13',       '9780571239566'                 ],
+        [ 'is',     'ean13',        '9780571239566'                 ],
+        [ 'is',     'title',        'Touching from a Distance'      ],
+        [ 'is',     'author',       'Deborah Curtis'                ],
+        [ 'is',     'publisher',    'Faber and Faber'               ],
+        [ 'is',     'pubdate',      '04/10/2007'                    ],
+        [ 'is',     'binding',      'Paperback'                     ],
+        [ 'is',     'pages',        240                             ],
         [ 'is',     'image_link',   'http://www.waterstones.com/wat/images/nbd/m/978057/123/9780571239566.jpg' ],
         [ 'is',     'thumb_link',   'http://www.waterstones.com/wat/images/nbd/s/978057/123/9780571239566.jpg' ],
         [ 'like',   'description',  qr|Ian Curtis left behind a legacy rich in artistic genius| ],
@@ -73,8 +73,8 @@ SKIP: {
     }
 
     for my $isbn (keys %tests) {
-        $record = $scraper->search($isbn);
-        my $error  = $record->error || '';
+        eval { $record = $scraper->search($isbn) };
+        my $error = $@ || $record->error || '';
 
         SKIP: {
             skip "Website unavailable", scalar(@{ $tests{$isbn} }) + 2   
@@ -82,7 +82,9 @@ SKIP: {
             skip "Book unavailable", scalar(@{ $tests{$isbn} }) + 2   
                 if($error =~ /Failed to find that book/ || !$record->found);
 
-            diag($error)    if($error);
+            unless($record && $record->found) {
+                diag("error=$error, record error=".$record->error);
+            }
 
             is($record->found,1);
             is($record->found_in,$DRIVER);

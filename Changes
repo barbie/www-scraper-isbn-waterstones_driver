@@ -1,8 +1,20 @@
 Revision history for Perl extension WWW-Scraper-ISBN-Waterstones_Driver.
 
-0.02    30/11/2010
+0.03    2013-03-10
+        - change file dates changed to meet W3CDTF standards.
+        - added isbn-check.pl to examples.
+        - added minimum perl version (5.006).
+        - upgraded to Test::CPAN::Meta::JSON for tests.
+        - META tests no longer require specific versions.
+        - various META updates.
+        - License updated consistently to Artistic License v2.0.
+        - reworked Makefile.PL for clarity.
+        - updated test suite.
+        - more error reporting in tests.
+
+0.02    2010-11-30
         - fix to field cleanup code for non-existent field values.
         - more skip checks.
 
-0.01	18/11/2010
+0.01	2010-11-18
         - initial release

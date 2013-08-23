@@ -1,6 +1,6 @@
 {
     "name": "WWW-Scraper-ISBN-Waterstones_Driver",
-    "version": "0.01",
+    "version": "0.02",
     "abstract": "Search driver for the Waterstones online book catalog",
     "author": ["Barbie <barbie@cpan.org>"],
 
@@ -43,7 +43,7 @@
     "provides": {
         "WWW::Scraper::ISBN::Waterstones_Driver": {
             "file": "lib/WWW/Scraper/ISBN/Waterstones_Driver.pm",
-            "version": "0.01"
+            "version": "0.02"
         }
     },
     "no_index": {

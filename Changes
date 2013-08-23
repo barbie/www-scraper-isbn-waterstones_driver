@@ -1,4 +1,8 @@
 Revision history for Perl extension WWW-Scraper-ISBN-Waterstones_Driver.
 
+0.02    30/11/2010
+        - fix to field cleanup code for non-existent field values.
+        - more skip checks.
+
 0.01	18/11/2010
         - initial release

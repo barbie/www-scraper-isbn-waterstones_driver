@@ -69,7 +69,7 @@ SKIP: {
     elsif($record->found) {
         ok(0,'Unexpectedly found a non-existent book');
     } else {
-		like($record->error,qr/Invalid ISBN specified|Failed to find that book|website appears to be unavailable/);
+		like($record->error,qr/Invalid ISBN specified|Failed to find that book|website appears to be unavailable|Could not extract data/);
     }
 
     for my $isbn (keys %tests) {
@@ -82,9 +82,7 @@ SKIP: {
             skip "Book unavailable", scalar(@{ $tests{$isbn} }) + 2   
                 if($error =~ /Failed to find that book/ || !$record->found);
 
-            unless($record->found) {
-                diag($record->error);
-            }
+            diag($error)    if($error);
 
             is($record->found,1);
             is($record->found_in,$DRIVER);

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA);
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 #--------------------------------------------------------------------------
 
@@ -140,15 +140,21 @@ sub search {
     ($data->{isbn13})           = $html =~ m!<p><strong>ISBN</strong><BR />([^<]+)</p>!si;
     ($data->{image})            = $html =~ m!<img src="([^"]+$ean.jpg)"!si;
 
-    $data->{publisher}  =~ s/&#0?39;/'/g;
+#use Data::Dumper;
+#print STDERR "\n# data=" . Dumper($data);
+
+	return $self->handler("Could not extract data from the Waterstones result page. [$isbn]")
+		unless(defined $data);
+
+    for(qw(author publisher description)) {
+        $data->{$_} =~ s/&#0?39;/'/g    if($data->{$_});
+    }
+
     $data->{isbn10}     = $self->convert_to_isbn10($ean);
     $data->{thumb}      = $thumb || $data->{image};
 
 #use Data::Dumper;
-#print STDERR "\n# " . Dumper($data);
-
-	return $self->handler("Could not extract data from the Waterstones result page.")
-		unless(defined $data);
+#print STDERR "\n# data=" . Dumper($data);
 
 	# trim top and tail
 	foreach (keys %$data) { 

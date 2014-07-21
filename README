@@ -27,6 +27,7 @@ This module requires these other modules:
 
 For testing the module requires these modules:
 
+  Data::Dumper
   IO::File
   Test::More
 

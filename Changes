@@ -1,4 +1,7 @@
-Revision history for Perl extension WWW-Scraper-ISBN-Waterstones_Driver.
+Revision history for WWW-Scraper-ISBN-Waterstones_Driver
+========================================================
+
+        - added git repository links to metadata.
 
 0.03    2013-03-10
         - change file dates changed to meet W3CDTF standards.

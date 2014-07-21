@@ -110,7 +110,7 @@ sub search {
     my $html = $mech->content();
 
 	return $self->handler("Failed to find that book on the Waterstones website. [$isbn]")
-		if($html =~ m!Sorry, there are no results for!si);
+		if($html =~ m|<strong>Sorry!</strong> We did not find any results for|si);
     
     $html =~ s/&amp;/&/g;
 #print STDERR "\n# content2=[\n$html\n]\n";

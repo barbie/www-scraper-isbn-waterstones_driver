@@ -2,7 +2,7 @@
 use strict;
 
 use Data::Dumper;
-use Test::More tests => 34;
+use Test::More tests => 35;
 use WWW::Scraper::ISBN;
 
 ###########################################################
@@ -64,8 +64,18 @@ SKIP: {
     eval { $record = $scraper->search($isbn); };
     if($@) {
         like($@,qr/Invalid ISBN specified/);
+    } elsif($record->found) {
+        ok(0,'Unexpectedly found a non-existent book');
+    } else {
+		like($record->error,qr/Invalid ISBN specified|Failed to find that book|website appears to be unavailable|Could not extract data/);
     }
-    elsif($record->found) {
+
+    # this ISBN is now out of print
+    $isbn = '9780521420365';
+    eval { $record = $scraper->search($isbn); };
+    if($@) {
+        like($@,qr/Invalid ISBN specified/);
+    } elsif($record->found) {
         ok(0,'Unexpectedly found a non-existent book');
     } else {
 		like($record->error,qr/Invalid ISBN specified|Failed to find that book|website appears to be unavailable|Could not extract data/);

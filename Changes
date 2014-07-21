@@ -9,6 +9,7 @@ Revision history for WWW-Scraper-ISBN-Waterstones_Driver
         - conversion routines now moved to WWW::Scraper::ISBN::Driver.
         - removed conversion tests.
         - updated pattern matching due to website redesign.
+        - updated no results check,and added test.
 
 0.03    2013-03-10
         - change file dates changed to meet W3CDTF standards.

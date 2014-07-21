@@ -10,7 +10,6 @@ examples/isbn-check.pl
 lib/WWW/Scraper/ISBN/Waterstones_Driver.pm
 t/01basic.t
 t/10object.t
-t/11convert.t
 t/91pod.t
 t/92podcover.t
 t/94metatest.t

@@ -102,25 +102,9 @@ sub search {
     return $self->handler("The Waterstones website appears to be unavailable.")
 	    if($@ || !$mech->success() || !$mech->content());
 
-    my $content = $mech->content;
-    my ($link,$thumb) = $content =~ m!<a href="([^"]+)">\s*<img src="([^"]+$ean.jpg)"!si;
-
 #print STDERR "\n# search=[".SEARCH."$ean]\n";
-#print STDERR "\n# link=[$link]\n";
-#print STDERR "\n# thumb=[$thumb]\n";
-#print STDERR "\n# content1=[\n$content\n]\n";
 #print STDERR "\n# is_html=".$mech->is_html().", content type=".$mech->content_type()."\n";
 #print STDERR "\n# dump headers=".$mech->dump_headers."\n";
-
-	return $self->handler("Failed to find that book on the Waterstones website. [$isbn]")
-		if(!$link || $content =~ m!Sorry, there are no results for!si);
-
-    $link =~ s/&amp;/&/g;
-#print STDERR "\n# link3=[$link]\n";
-
-    eval { $mech->get( $link ) };
-    return $self->handler("The Waterstones website appears to be unavailable.")
-	    if($@ || !$mech->success() || !$mech->content());
 
 	# The Book page
     my $html = $mech->content();
@@ -136,7 +120,7 @@ sub search {
     ($data->{author})           = $html =~ m!<p class="byAuthor">\s*by\s*<a[^>]+>([^<]+)</a>!si;
     ($data->{binding},$data->{pages})          
                                 = $html =~ m!<td headers="productFormat">([^<]+)\s+(\d+)\s+pages</td>!si;
-    ($data->{description})      = $html =~ m!<h2>Synopsis</h2>\s*<p>([^<]+)!si;
+    ($data->{description})      = $html =~ m!<div class="large-product-pane left">(.*?)</div>!si;
     ($data->{pubdate})          = $html =~ m!<p><strong>Published</strong><BR />([^<]+)</p>!si;
     ($data->{publisher})        = $html =~ m!<p><strong>Publisher</strong><BR />([^<]+)</p>!si;
     ($data->{isbn13})           = $html =~ m!<p><strong>ISBN</strong><BR />([^<]+)</p>!si;
@@ -148,12 +132,17 @@ sub search {
 	return $self->handler("Could not extract data from the Waterstones result page. [$isbn]")
 		unless(defined $data);
 
-    for(qw(author publisher description)) {
+    for(qw(author publisher description title)) {
         $data->{$_} =~ s/&#0?39;/'/g    if($data->{$_});
     }
 
-    $data->{isbn10}     = $self->convert_to_isbn10($ean);
-    $data->{thumb}      = $thumb || $data->{image};
+    $data->{isbn10} = $self->convert_to_isbn10($ean);
+    $data->{thumb}  = $data->{image};
+    $data->{thumb}  =~ s!/images/nbd/[lms]/!/images/nbd/s/!;
+    $data->{image}  =~ s!/images/nbd/[lms]/!/images/nbd/l/!;
+    $data->{title}  =~ s!\s*\($data->{binding}\)\s*!!;
+
+    $data->{description}    =~ s!<[^>]+>!!;
 
 #use Data::Dumper;
 #print STDERR "\n# data=" . Dumper($data);
@@ -176,7 +165,7 @@ sub search {
 		'isbn'			=> $data->{isbn13},
 		'author'		=> $data->{author},
 		'title'			=> $data->{title},
-		'book_link'		=> $url,
+		'book_link'		=> "$url",
 		'image_link'	=> $data->{image},
 		'thumb_link'	=> $data->{thumb},
 		'description'	=> $data->{description},
@@ -184,6 +173,7 @@ sub search {
 		'publisher'		=> $data->{publisher},
 		'binding'	    => $data->{binding},
 		'pages'		    => $data->{pages},
+        'html'          => $html
 	};
 
 #use Data::Dumper;

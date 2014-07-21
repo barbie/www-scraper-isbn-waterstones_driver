@@ -21,8 +21,8 @@ my %tests = (
         [ 'is',     'publisher',    'Morgan Kaufmann Publishers In' ],
         [ 'is',     'pubdate',      '10/12/2004'                    ],
         [ 'is',     'binding',      'Paperback'                     ],
-        [ 'is',     'pages',        600                             ],
-        [ 'is',     'image_link',   'http://www.waterstones.com/wat/images/nbd/m/978155/860/9781558607019.jpg' ],
+        [ 'is',     'pages',        602                             ],
+        [ 'is',     'image_link',   'http://www.waterstones.com/wat/images/nbd/l/978155/860/9781558607019.jpg' ],
         [ 'is',     'thumb_link',   'http://www.waterstones.com/wat/images/nbd/s/978155/860/9781558607019.jpg' ],
         [ 'like',   'description',  qr|Most Perl programmers were originally trained as C and Unix programmers,| ],
         [ 'is',     'book_link',    'http://www.waterstones.com/waterstonesweb/products/mark+jason+dominus/higher-order+perl/4263640/' ]
@@ -34,11 +34,11 @@ my %tests = (
         [ 'is',     'ean13',        '9780571239566'                 ],
         [ 'is',     'title',        'Touching from a Distance'      ],
         [ 'is',     'author',       'Deborah Curtis'                ],
-        [ 'is',     'publisher',    'Faber and Faber'               ],
+        [ 'is',     'publisher',    'Faber & Faber'                 ],
         [ 'is',     'pubdate',      '04/10/2007'                    ],
         [ 'is',     'binding',      'Paperback'                     ],
         [ 'is',     'pages',        240                             ],
-        [ 'is',     'image_link',   'http://www.waterstones.com/wat/images/nbd/m/978057/123/9780571239566.jpg' ],
+        [ 'is',     'image_link',   'http://www.waterstones.com/wat/images/nbd/l/978057/123/9780571239566.jpg' ],
         [ 'is',     'thumb_link',   'http://www.waterstones.com/wat/images/nbd/s/978057/123/9780571239566.jpg' ],
         [ 'like',   'description',  qr|Ian Curtis left behind a legacy rich in artistic genius| ],
         [ 'is',     'book_link',    'http://www.waterstones.com/waterstonesweb/products/deborah+curtis/touching+from+a+distance/5963509/' ]
@@ -47,7 +47,6 @@ my %tests = (
 
 my $tests = 0;
 for my $isbn (keys %tests) { $tests += scalar( @{ $tests{$isbn} } ) + 2 }
-
 
 ###########################################################
 

@@ -5,6 +5,7 @@ Revision history for WWW-Scraper-ISBN-Waterstones_Driver
         - fixed distribution name in META.
         - extended test suite.
         - added missing prerequisite; Data::Dumper.
+        - upgrade to WWW-Scraper-ISBN-1.00.
 
 0.03    2013-03-10
         - change file dates changed to meet W3CDTF standards.

@@ -6,6 +6,7 @@ Revision history for WWW-Scraper-ISBN-Waterstones_Driver
         - extended test suite.
         - added missing prerequisite; Data::Dumper.
         - upgrade to WWW-Scraper-ISBN-1.00.
+        - conversion routines now moved to WWW::Scraper::ISBN::Driver.
 
 0.03    2013-03-10
         - change file dates changed to meet W3CDTF standards.

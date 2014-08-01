@@ -1,6 +1,7 @@
 Revision history for WWW-Scraper-ISBN-Waterstones_Driver
 ========================================================
 
+0.04    2014-08-01
         - added git repository links to metadata.
         - fixed distribution name in META.
         - extended test suite.

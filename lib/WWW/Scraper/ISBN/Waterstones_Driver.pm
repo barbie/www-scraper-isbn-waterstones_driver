@@ -111,7 +111,10 @@ sub search {
 
 	return $self->handler("Failed to find that book on the Waterstones website. [$isbn]")
 		if($html =~ m|<strong>Sorry!</strong> We did not find any results for|si);
-    
+
+	return $self->handler("Waterstones website has crashed. [$isbn]")
+		if($html =~ m|Exception was UseCaseError: \d+|si);
+
     $html =~ s/&amp;/&/g;
 #print STDERR "\n# content2=[\n$html\n]\n";
 
@@ -136,13 +139,15 @@ sub search {
         $data->{$_} =~ s/&#0?39;/'/g    if($data->{$_});
     }
 
-    $data->{isbn10} = $self->convert_to_isbn10($ean);
-    $data->{thumb}  = $data->{image};
-    $data->{thumb}  =~ s!/images/nbd/[lms]/!/images/nbd/s/!;
-    $data->{image}  =~ s!/images/nbd/[lms]/!/images/nbd/l/!;
-    $data->{title}  =~ s!\s*\($data->{binding}\)\s*!!;
+    $data->{isbn10}      = $self->convert_to_isbn10($ean);
+    $data->{title}       =~ s!\s*\($data->{binding}\)\s*!!  if($data->{title});
+    $data->{description} =~ s!<[^>]+>!!                     if($data->{description});
 
-    $data->{description}    =~ s!<[^>]+>!!;
+    if($data->{image}) {
+        $data->{thumb}  = $data->{image};
+        $data->{thumb}  =~ s!/images/nbd/[lms]/!/images/nbd/s/!;
+        $data->{image}  =~ s!/images/nbd/[lms]/!/images/nbd/l/!;
+    }
 
 #use Data::Dumper;
 #print STDERR "\n# data=" . Dumper($data);

@@ -2,6 +2,7 @@ Revision history for WWW-Scraper-ISBN-Waterstones_Driver
 ========================================================
 
         - Waterstones' website fails alot!
+        - fixed license fields in META.json to be lists.
 
 0.05    2014-08-08
         - fixed skip test count.

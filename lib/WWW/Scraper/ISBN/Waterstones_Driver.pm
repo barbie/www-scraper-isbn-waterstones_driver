@@ -37,8 +37,8 @@ use WWW::Mechanize;
 ###########################################################################
 # Constants
 
-use constant	REFERER	=> 'http://www.waterstones.com';
-use constant	SEARCH	=> 'http://www.waterstones.com/waterstonesweb/simpleSearch.do?typeAheadFormSubmit.x=15&typeAheadFormSubmit.y=17&simpleSearchString=';
+use constant	REFERER	=> 'https://www.waterstones.com';
+use constant	SEARCH	=> 'https://www.waterstones.com/index/search?term=';
 my ($URL1,$URL2) = ('http://www.waterstones.com/book/','/[^?]+\?b=\-3\&amp;t=\-26\#Bibliographicdata\-26');
 
 #--------------------------------------------------------------------------
@@ -94,7 +94,7 @@ sub search {
                  || (length $isbn == 10 && $isbn ne $self->convert_to_isbn10($ean)));
 
 	my $mech = WWW::Mechanize->new();
-    $mech->agent_alias( 'Windows IE 6' );
+    $mech->agent_alias( 'Linux Mozilla' );
     $mech->add_header( 'Accept-Encoding' => undef );
     $mech->add_header( 'Referer' => REFERER );
 
@@ -105,6 +105,18 @@ sub search {
 #print STDERR "\n# search=[".SEARCH."$ean]\n";
 #print STDERR "\n# is_html=".$mech->is_html().", content type=".$mech->content_type()."\n";
 #print STDERR "\n# dump headers=".$mech->dump_headers."\n";
+
+    # we get back a redirect
+    my $response = $mech->response();
+    my $url = $response->header( 'X-Meta-Og-Url' );
+#print STDERR "\n# url=[$url]\n";
+
+	return $self->handler("Failed to find that book on the Waterstones website. [$isbn]")
+	    if($url eq REFERER || $url eq REFERER . "/books/search/term/$ean");
+
+    eval { $mech->get( $url ) };
+	return $self->handler("Failed to find that book on the Waterstones website. [$isbn]")
+	    if($@ || !$mech->success() || !$mech->content());
 
 	# The Book page
     my $html = $mech->content();
@@ -119,15 +131,14 @@ sub search {
 #print STDERR "\n# content2=[\n$html\n]\n";
 
     my $data;
-    ($data->{title})            = $html =~ m!<div class="contentProductDetails">\s*<h1>([^<]+)</h1>!si;
-    ($data->{author})           = $html =~ m!<p class="byAuthor">\s*by\s*<a[^>]+>([^<]+)</a>!si;
-    ($data->{binding},$data->{pages})          
-                                = $html =~ m!<td headers="productFormat">([^<]+)\s+(\d+)\s+pages</td>!si;
-    ($data->{description})      = $html =~ m!<div class="large-product-pane left">(.*?)</div>!si;
-    ($data->{pubdate})          = $html =~ m!<p><strong>Published</strong><BR />([^<]+)</p>!si;
-    ($data->{publisher})        = $html =~ m!<p><strong>Publisher</strong><BR />([^<]+)</p>!si;
-    ($data->{isbn13})           = $html =~ m!<p><strong>ISBN</strong><BR />([^<]+)</p>!si;
-    ($data->{image})            = $html =~ m!<img src="([^"]+$ean.jpg)"!si;
+    ($data->{title},$data->{author})
+                                = $html =~ m!<title>(.*?)\s*by\s*(.*?) \| Waterstones.com</title>!si;
+    ($data->{binding})          = $html =~ m!<span class="book-title" itemprop="name" id="scope_book_title">.*? \((.*?)\)</span>!si;
+    ($data->{description})      = $html =~ m!<div itemprop="description" id="scope_book_description">(.*?)</div>!si;
+    ($data->{publisher})        = $html =~ m!<span itemprop="publisher">([^<]+)</span>!si;
+    ($data->{pubdate})          = $html =~ m!<meta itemprop="datePublished" content="[^"]+" />([\d\/]+)\s*</span>!si;
+    ($data->{isbn13})           = $html =~ m!<span itemprop="isbn">([^<]+)</span>!si;
+    ($data->{image})            = $html =~ m!<img itemprop="image" id="scope_book_image" src="([^"]+$ean.jpg)"!si;
 
 #use Data::Dumper;
 #print STDERR "\n# data=" . Dumper($data);
@@ -160,8 +171,8 @@ sub search {
         $data->{$_} =~ s/\s+$//;
     }
 
-    my $url = $mech->uri();
-    $url =~ s/\?.*//;
+#    my $url = $mech->uri();
+#    $url =~ s/\?.*//;
 
 	my $bk = {
 		'ean13'		    => $data->{isbn13},

@@ -1,6 +1,8 @@
 Revision history for WWW-Scraper-ISBN-Waterstones_Driver
 ========================================================
 
+        - new patterns for new website design.
+
 0.07    2014-12-12
         - ping fix for Cygwin (thanks to Alexandr Ciornii).
 

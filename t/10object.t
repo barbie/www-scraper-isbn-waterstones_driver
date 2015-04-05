@@ -16,16 +16,16 @@ my %tests = (
         [ 'is',     'isbn10',       '1558607013'                    ],
         [ 'is',     'isbn13',       '9781558607019'                 ],
         [ 'is',     'ean13',        '9781558607019'                 ],
-        [ 'is',     'title',        'Higher-Order Perl: Transforming Programs with Programs'    ],
+        [ 'is',     'title',        'Higher-Order Perl'             ],
         [ 'is',     'author',       'Mark Jason Dominus'            ],
-        [ 'is',     'publisher',    'Morgan Kaufmann Publishers In' ],
+        [ 'is',     'publisher',    'Elsevier Science & Technology' ],
         [ 'is',     'pubdate',      '10/12/2004'                    ],
         [ 'is',     'binding',      'Paperback'                     ],
-        [ 'is',     'pages',        602                             ],
-        [ 'is',     'image_link',   'http://www.waterstones.com/wat/images/nbd/l/978155/860/9781558607019.jpg' ],
-        [ 'is',     'thumb_link',   'http://www.waterstones.com/wat/images/nbd/s/978155/860/9781558607019.jpg' ],
+        [ 'is',     'pages',        undef                           ],
+        [ 'like',   'image_link',   qr|9781558607019\.jpg$|         ],
+        [ 'like',   'thumb_link',   qr|9781558607019\.jpg$|         ],
         [ 'like',   'description',  qr|Most Perl programmers were originally trained as C and Unix programmers,| ],
-        [ 'is',     'book_link',    'http://www.waterstones.com/waterstonesweb/products/mark+jason+dominus/higher-order+perl/4263640/' ]
+        [ 'is',     'book_link',    'https://www.waterstones.com/book/higher-order-perl/mark-jason-dominus/9781558607019' ]
     ],
     '9780571239566' => [
         [ 'is',     'isbn',         '9780571239566'                 ],
@@ -37,11 +37,11 @@ my %tests = (
         [ 'is',     'publisher',    'Faber & Faber'                 ],
         [ 'is',     'pubdate',      '04/10/2007'                    ],
         [ 'is',     'binding',      'Paperback'                     ],
-        [ 'is',     'pages',        240                             ],
-        [ 'is',     'image_link',   'http://www.waterstones.com/wat/images/nbd/l/978057/123/9780571239566.jpg' ],
-        [ 'is',     'thumb_link',   'http://www.waterstones.com/wat/images/nbd/s/978057/123/9780571239566.jpg' ],
+        [ 'is',     'pages',        undef                           ],
+        [ 'like',   'image_link',   qr|9780571239566\.jpg$|         ],
+        [ 'like',   'thumb_link',   qr|9780571239566\.jpg$|         ],
         [ 'like',   'description',  qr|Ian Curtis left behind a legacy rich in artistic genius| ],
-        [ 'is',     'book_link',    'http://www.waterstones.com/waterstonesweb/products/deborah+curtis/touching+from+a+distance/5963509/' ]
+        [ 'is',     'book_link',    'https://www.waterstones.com/book/touching-from-a-distance/deborah-curtis/9780571239566' ]
     ],
 );
 

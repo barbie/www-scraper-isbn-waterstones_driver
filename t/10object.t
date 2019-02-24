@@ -19,7 +19,7 @@ my %tests = (
         [ 'is',     'title',        'Higher-Order Perl'             ],
         [ 'is',     'author',       'Mark Jason Dominus'            ],
         [ 'is',     'publisher',    'Elsevier Science & Technology' ],
-        [ 'is',     'pubdate',      '10/12/2004'                    ],
+        [ 'is',     'pubdate',      '31/03/2005'                    ],
         [ 'is',     'binding',      'Paperback'                     ],
         [ 'is',     'pages',        undef                           ],
         [ 'like',   'image_link',   qr|9781558607019\.jpg$|         ],

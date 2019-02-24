@@ -33,6 +33,7 @@ use base qw(WWW::Scraper::ISBN::Driver);
 # Modules
 
 use WWW::Mechanize;
+use JSON::XS;
 
 ###########################################################################
 # Constants
@@ -132,13 +133,25 @@ sub search {
 
     my $data;
     ($data->{title},$data->{author})
-                                = $html =~ m!<title>(.*?)\s*by\s*(.*?) \| Waterstones.com</title>!si;
+                                = $html =~ m!<title>(.*?)\s*by\s*(.*?) \| Waterstones</title>!si;
     ($data->{binding})          = $html =~ m!<span class="book-title" itemprop="name" id="scope_book_title">.*? \((.*?)\)</span>!si;
     ($data->{description})      = $html =~ m!<div itemprop="description" id="scope_book_description">(.*?)</div>!si;
     ($data->{publisher})        = $html =~ m!<span itemprop="publisher">([^<]+)</span>!si;
     ($data->{pubdate})          = $html =~ m!<meta itemprop="datePublished" content="[^"]+" />([\d\/]+)\s*</span>!si;
     ($data->{isbn13})           = $html =~ m!<span itemprop="isbn">([^<]+)</span>!si;
     ($data->{image})            = $html =~ m!<img itemprop="image" id="scope_book_image" src="([^"]+$ean.jpg)"!si;
+
+    my ($json)                  = $html =~ m!<script>\s*ws_dl = \[(.*?)\]\s*</script>!si;
+#print STDERR "\n# json=[\n$json\n]\n";
+    if($json) {
+        $data->{json} = decode_json( $json );
+        for(qw(author title imprint publication_date format)) {
+            $data->{$_} = $data->{json}{'gtm-books'}[0]{$_};
+        }
+
+        $data->{binding} ||= $data->{format};
+        $data->{pubdate} ||= $data->{publication_date};
+    }
 
 #use Data::Dumper;
 #print STDERR "\n# data=" . Dumper($data);
@@ -189,6 +202,7 @@ sub search {
 		'publisher'		=> $data->{publisher},
 		'binding'	    => $data->{binding},
 		'pages'		    => $data->{pages},
+        'json'          => $data->{json},
         'html'          => $html
 	};
 

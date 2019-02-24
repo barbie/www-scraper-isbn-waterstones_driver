@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA);
-$VERSION = '0.08';
+$VERSION = '0.09';
 
 #--------------------------------------------------------------------------
 
@@ -222,8 +222,9 @@ __END__
 
 Requires the following modules be installed:
 
-L<WWW::Scraper::ISBN::Driver>,
-L<WWW::Mechanize>
+L<JSON::XS>,
+L<WWW::Mechanize>,
+L<WWW::Scraper::ISBN::Driver>
 
 =head1 SEE ALSO
 
@@ -250,7 +251,7 @@ be forthcoming, please feel free to (politely) remind me.
 
 =head1 COPYRIGHT & LICENSE
 
-  Copyright (C) 2010-2015 Barbie for Miss Barbell Productions
+  Copyright (C) 2010-2019 Barbie for Miss Barbell Productions
 
   This module is free software; you can redistribute it and/or
   modify it under the Artistic Licence v2.
